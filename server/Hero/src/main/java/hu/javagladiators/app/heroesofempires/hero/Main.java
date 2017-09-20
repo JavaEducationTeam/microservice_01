@@ -6,6 +6,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import java.io.IOException;
 import java.net.URI;
+import org.glassfish.jersey.linking.DeclarativeLinkingFeature;
 
 /**
  * Main class.
@@ -22,7 +23,8 @@ public class Main {
     public static HttpServer startServer() {
         // create a resource config that scans for JAX-RS resources and providers
         // in hu.javagladiators.app.heroesofempires.hero package
-        final ResourceConfig rc = new ResourceConfig().packages("hu.javagladiators.app.heroesofempires.hero");
+        final ResourceConfig rc = new ResourceConfig().packages("hu.javagladiators.app.heroesofempires.hero.resource")
+            .register(DeclarativeLinkingFeature.class);
 
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI
