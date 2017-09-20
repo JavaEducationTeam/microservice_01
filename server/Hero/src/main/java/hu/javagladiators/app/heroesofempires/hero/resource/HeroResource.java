@@ -48,10 +48,10 @@ public class HeroResource {
     
     @GET
     @Path("{offset}/{limit}")
-    public Items query(@PathParam("offset") int pStart, @PathParam("limit") int pCount ){
-        Items res = new Items(pCount, pStart, heroes.size());
-        for(int i=0; (i+pStart)<heroes.size() && i<pCount; i++)
-            res.addItems(heroes.get(+pStart));
+    public Items query(@PathParam("offset") int offset, @PathParam("limit") int limit ){
+        Items res = new Items(limit, offset, heroes.size());
+        for(int i=0; (i+offset)<heroes.size() && i<limit; i++)
+            res.addItems(heroes.get(+offset));
         return res;
     }
 

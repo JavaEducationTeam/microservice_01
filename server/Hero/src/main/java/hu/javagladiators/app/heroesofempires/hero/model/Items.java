@@ -6,6 +6,7 @@ import hu.javagladiators.app.heroesofempires.hero.resource.HeroResource;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.core.Link;
+import org.glassfish.jersey.linking.Binding;
 import org.glassfish.jersey.linking.InjectLink;
 import org.glassfish.jersey.linking.InjectLinks;
 
@@ -27,6 +28,23 @@ public class Items<T> {
                     style = InjectLink.Style.ABSOLUTE,
                     rel = "self"
             ),
+            @InjectLink(
+                    resource = HeroResource.class,
+                    style = InjectLink.Style.ABSOLUTE,
+                    method = "query",
+                    rel = "last"
+            ),
+            @InjectLink(
+                    resource = HeroResource.class,
+                    style = InjectLink.Style.ABSOLUTE,
+                    method = "query",
+                    condition = "${instance.offset + instance.limit < instance.fullitemnumber}",
+                    bindings = {
+                            @Binding(name = "offset", value = "${instance.offset + instance.limit}"),
+                            @Binding(name = "limit", value = "${instance.limit}")
+                    },
+                    rel = "next"
+            )        
     })
     @JsonSerialize(using = ListLinkSerializer.class)  
     private List<Link> links;
@@ -59,22 +77,6 @@ public class Items<T> {
         this.page = page;
     }
 
-    public int getStartitemnumber() {
-        return offset;
-    }
-
-    public void setStartitemnumber(int startitemnumber) {
-        this.offset = startitemnumber;
-    }
-
-    public int getFullitemnumber() {
-        return fullitemnumber;
-    }
-
-    public void setFullitemnumber(int fullitemnumber) {
-        this.fullitemnumber = fullitemnumber;
-    }
-
     public List getItems() {
         return items;
     }
@@ -85,6 +87,38 @@ public class Items<T> {
 
     public void addItems(T item) {
         this.items.add(item);
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
+
+    public int getFullitemnumber() {
+        return fullitemnumber;
+    }
+
+    public void setFullitemnumber(int fullitemnumber) {
+        this.fullitemnumber = fullitemnumber;
+    }
+
+    public List<Link> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<Link> links) {
+        this.links = links;
     }
     
     
